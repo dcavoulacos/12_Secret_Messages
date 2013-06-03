@@ -22,6 +22,7 @@ def key_breaker(jumbled_key)
 			dictionary << word
 		end		
 	end
+
 	rough_potentials = []
 	('A'..'Z').each do |shift_letter|
 		decoded_keyword = ""
@@ -93,7 +94,7 @@ end
 ##########Main code section###############
 
 cipher = File.new("complex_cipher.txt")
-jumbled_key = cipher.gets.chomp
+jumbled_key = cipher.gets.chomp	
 cipher.gets
 jumbled_message = cipher.read
 
