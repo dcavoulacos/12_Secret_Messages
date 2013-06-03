@@ -100,4 +100,7 @@ jumbled_key = cipher.gets.chomp
 cipher.gets
 jumbled_message = cipher.read
 
-IO.write("output.txt", Secret_Messages(jumbled_key, jumbled_message))
+puts "Please enter the desired name of the output file."
+output = gets.chomp
+
+IO.write(output, Secret_Messages(jumbled_key, jumbled_message))
