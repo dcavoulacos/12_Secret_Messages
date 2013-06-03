@@ -13,6 +13,7 @@ end
 def key_breaker(jumbled_key)
 	dictionary = []
 	File.new("English_Dictionary.txt").each_line do |line|
+
 		if line.include?(" ")
 			word = line.partition(" ")[0]
 			dictionary << word
@@ -96,7 +97,6 @@ jumbled_key = cipher.gets.chomp
 cipher.gets
 jumbled_message = cipher.gets.chomp
 
-puts key_breaker(jumbled_key)
 
 puts Secret_Messages(jumbled_key, jumbled_message)
 
