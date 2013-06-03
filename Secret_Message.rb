@@ -1,21 +1,30 @@
 def Secret_Messages(jumbled_key, jumbled_message)
 	key = key_breaker(jumbled_key)
 	key_shift = key_converter(key)
-	puts key_shift
 	decoded_message = message_breaker(key_shift, jumbled_message)
 	return decoded_message
 end
 
 def english_word?(word, dictionary)
-	return dictionary.include?(args.upcase)
+	return dictionary.include?(word.upcase)
 end
 
 
 def key_breaker(jumbled_key)
+	dictionary = []
+	File.new("English_Dictionary.txt").each_line do |line|
+		if line.include?(" ")
+			word = line.partition(" ")[0]
+			dictionary << word
+		else
+			word = line.chomp
+			dictionary << word
+		end		
+	end
 	rough_potentials = []
 	('A'..'Z').each do |shift_letter|
 		decoded_keyword = ""
-		coded_keyword.each_char do |letter|
+		jumbled_key.each_char do |letter|
 			new_position = (letter.ord - shift_letter.ord) + 65
 			if new_position < 65
 				new_position += 26
@@ -31,11 +40,12 @@ def key_breaker(jumbled_key)
 			fine_potentials << potential_keyword
 		end
 	end
+	return fine_potentials
 end
 
 def key_converter(key)
 	key_shift = []
-	key.upcase.codepoints.each do |letter|
+	key.join.upcase.codepoints.each do |letter|
 		key_shift << letter - 65
 	end
 	return key_shift
@@ -80,18 +90,15 @@ def message_breaker(key_shift, message)
 end
 
 ##########Main code section###############
-dictionary = []
-File.new("English_Dictionary.txt").each_line do |line|
-	word = line.partition(" ")[0]
-	dictionary << word
-end
 
-cipher = File.new("simple_cipher.txt")
-jumbled_key = cipher.gets
+cipher = File.new("complex_cipher.txt")
+jumbled_key = cipher.gets.chomp
 cipher.gets
-jumbled_message = cipher.gets
+jumbled_message = cipher.gets.chomp
 
-Secret_Messages(jumbled_key, jumbled_message)
+puts key_breaker(jumbled_key)
+
+puts Secret_Messages(jumbled_key, jumbled_message)
 
 
 
