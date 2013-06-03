@@ -7,17 +7,8 @@
  	end
 
 
-	@dictionary = []
-
-	def intialize
-		File.open(English_Dictionary.txt).each_line do |line|
-			word = line.partition(" ")[0]
-			@dictionary << word
-		end
-	end
-
-	def english_word?(args)
-		return @dictionary.include?()
+	def english_word?(word, dictionary)
+		return dictionary.include?(args.upcase)
 	end
 
 	def key_breaker
@@ -65,5 +56,9 @@
 		return decoded_message
 	end
 
-puts bytes_to_letters([65, 97, 90, 122])
-
+##########Main code section###############
+dictionary = []
+File.new("English_Dictionary.txt").each_line do |line|
+	word = line.partition(" ")[0]
+	dictionary << word
+end
