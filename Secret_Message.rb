@@ -6,18 +6,9 @@ def Secret_Messages(jumbled_key, jumbled_message)
 	return decoded_message
 end
 
-@dictionary = []
-
-def intialize
-	File.open(English_Dictionary.txt).each_line do |line|
-		word = line.partition(" ")[0]
-		@dictionary << word
+	def english_word?(word, dictionary)
+		return dictionary.include?(args.upcase)
 	end
-end
-
-def english_word?(args)
-	return @dictionary.include?()
-end
 
 
 def key_breaker(coded_keyword)
@@ -68,4 +59,10 @@ def message_breaker(key_shift, message)
 	return decoded_message
 end
 
-# puts bytes_to_letters([65, 97, 90, 122])
+##########Main code section###############
+dictionary = []
+File.new("English_Dictionary.txt").each_line do |line|
+	word = line.partition(" ")[0]
+	dictionary << word
+end
+
