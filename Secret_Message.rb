@@ -20,15 +20,11 @@ def english_word?(args)
 end
 
 
-def crack_keyword(coded_keyword)
+def key_breaker(coded_keyword)
 	potentials = []
 	(0..25).each do |shift_val|
 
 	end 
-end
-
-def key_breaker
-
 end
 
 def key_converter(key)
