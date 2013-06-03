@@ -98,6 +98,8 @@ cipher = File.new(file)
 jumbled_key = cipher.gets.chomp
 jumbled_message = cipher.read
 
+puts "Please enter the desired name of the output file."
+output = gets.chomp
 
-IO.write("complex_out.txt", Secret_Messages(jumbled_key, jumbled_message))
+IO.write(output, Secret_Messages(jumbled_key, jumbled_message))
 puts Secret_Messages(jumbled_key, jumbled_message)
