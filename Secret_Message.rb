@@ -95,10 +95,6 @@ end
 cipher = File.new("complex_cipher.txt")
 jumbled_key = cipher.gets.chomp
 cipher.gets
-jumbled_message = cipher.gets.chomp
+jumbled_message = cipher.read
 
-
-puts Secret_Messages(jumbled_key, jumbled_message)
-
-
-
+IO.write("cracked_cipher.txt", Secret_Messages(jumbled_key, jumbled_message))
