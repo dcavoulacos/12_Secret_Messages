@@ -92,10 +92,12 @@ def message_breaker(key_shift, message)
 end
 
 ##########Main code section###############
-
-cipher = File.new("complex_cipher.txt")
+puts "Please enter the name of the text file to be decoded."
+file = gets.chomp
+cipher = File.new(file)
 jumbled_key = cipher.gets.chomp
 jumbled_message = cipher.read
 
 
 IO.write("complex_out.txt", Secret_Messages(jumbled_key, jumbled_message))
+puts Secret_Messages(jumbled_key, jumbled_message)
