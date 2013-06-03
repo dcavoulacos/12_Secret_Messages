@@ -27,12 +27,17 @@ def key_converter(key)
 end
 
 def bytes_to_letters(args)
-	args.pack("c*")
+	chars = []
+	args.each do |byte|
+		chars << byte.chr
+	end
+	return chars
 end
 
 def char_shift(begin_char, end_char, current_char, shift)
+	range = end_char - begin_char + 1
 	new_char = current_char - shift
-	new_char =+ (end_char - begin_char + 1) if new_char > begin_char
+	new_char += range if new_char < begin_char
 	return new_char
 end
 
@@ -40,13 +45,13 @@ end
 def message_breaker(key_shift, message)
 	counter = 0
 	decoded_bytes = []
-	message.each_byte do |byte|
+	message.bytes do |byte|
 		counter = counter % key_shift.length
-		shift = key_shift.index(counter)		
+		shift = key_shift[counter]		
 		if (byte >= 65 && byte <= 90)
 			new_letter = char_shift(65, 90, byte, shift)
 			decoded_bytes << new_letter
-			counter =+ 1
+			counter += 1
 		elsif (byte >= 97 && byte <= 122)
 			new_letter = char_shift(97, 122, byte, shift)
 			decoded_bytes << new_letter
@@ -55,7 +60,7 @@ def message_breaker(key_shift, message)
 			decoded_bytes << byte
 		end
 	end
-	decoded_message = bytes_to_letters(decoded_bytes)
+	decoded_message = bytes_to_letters(decoded_bytes).join
 	return decoded_message
 end
 
@@ -65,4 +70,9 @@ File.new("English_Dictionary.txt").each_line do |line|
 	word = line.partition(" ")[0]
 	dictionary << word
 end
+
+message = message_breaker([0,1,11,4], "AUEECL LX DBHR")
+puts message
+
+
 
