@@ -1,6 +1,6 @@
 def Secret_Messages(jumbled_key, jumbled_message)
 	key = key_breaker(jumbled_key)
-	key_shift = key_converter(jumbled_key)
+	key_shift = key_converter(key)
 	puts key_shift
 	decoded_message = message_breaker(key_shift, jumbled_message)
 	return decoded_message
@@ -75,8 +75,12 @@ File.new("English_Dictionary.txt").each_line do |line|
 	dictionary << word
 end
 
-message = message_breaker([0,1,11,4], "AUEECL LX DBHR")
-puts message
+cipher = File.new("simple_cipher.txt")
+jumbled_key = cipher.gets
+cipher.gets
+jumbled_message = cipher.gets
+
+Secret_Messages(jumbled_key, jumbled_message)
 
 
 
