@@ -1,4 +1,4 @@
-class Secret_Messages
+	class Secret_Messages
 
 	@dictionary = []
 
@@ -13,17 +13,21 @@ class Secret_Messages
 		return @dictionary.include?()
 	end
 
-	def key_cypher
+	def crack_keyword(coded_keyword)
+		potentials = []
+		(0..25).each do |shift_val|
 
-# cypher is the paragraph(string) that we are decoding
-	cipher_array = cipher.chars
-	cipher_array.each do |char|
-		if /[a-zA-z]/.include?(char)
-			# code to shift
-		else
-			next
-		end
+		end 
 	end
 
+	def shift
 
-
+	# cicpher is the paragraph(string) that we are decoding
+	# cipher_array = cipher.chars
+	# cipher_array.each do |char|
+	# 	if /[a-zA-z]/.include?(char)
+	# 		# code to shift
+	# 	else
+	# 		next
+	# 	end
+end
