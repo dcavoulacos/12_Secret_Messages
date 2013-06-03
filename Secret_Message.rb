@@ -93,7 +93,9 @@ end
 
 ##########Main code section###############
 
-cipher = File.new("complex_cipher.txt")
+puts "Please enter the name of the text file to be decoded."
+file = gets.chomp
+cipher = File.new(file)
 jumbled_key = cipher.gets.chomp	
 cipher.gets
 jumbled_message = cipher.read
