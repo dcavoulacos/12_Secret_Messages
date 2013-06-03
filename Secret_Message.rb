@@ -6,16 +6,31 @@ def Secret_Messages(jumbled_key, jumbled_message)
 	return decoded_message
 end
 
-	def english_word?(word, dictionary)
-		return dictionary.include?(args.upcase)
+def english_word?(word, dictionary)
+	return dictionary.include?(args.upcase)
+end
+
+
+def key_breaker(jumbled_key)
+	rough_potentials = []
+	('A'..'Z').each do |shift_letter|
+		decoded_keyword = ""
+		coded_keyword.each_char do |letter|
+			new_position = (letter.ord - shift_letter.ord) + 65
+			if new_position < 65
+				new_position += 26
+			end
+			decoded_keyword << new_position.chr
+		end
+		rough_potentials << decoded_keyword
 	end
 
-
-def key_breaker(coded_keyword)
-	potentials = []
-	(0..25).each do |shift_val|
-
-	end 
+	fine_potentials = []
+	rough_potentials.each do |potential_keyword|
+		if english_word?(potential_keyword, dictionary)
+			fine_potentials << potential_keyword
+		end
+	end
 end
 
 def key_converter(key)
