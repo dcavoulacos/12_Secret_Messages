@@ -6,19 +6,25 @@ class Message
 		file = gets.chomp
 		cipher = File.new(file)
 		@jumbled_key = cipher.gets.chomp
+		cipher.gets
 		@jumbled_message = cipher.read
 		puts "Please enter the name of the dictonary file you wish to use."
 		@dictionary = gets.chomp
 
 		puts "Please enter the desired name of the output file."
 		@output = gets.chomp
-		IO.write(@output, self.break)
+		self.break
 	end
 
 	def break
-		decoded_message = Decoder.new(@jumbled_key, @jumbled_message, @dictionary).Secret_Messages
+		@decoded_message = Decoder.new(@jumbled_key, @jumbled_message, @dictionary).decode
+	end
+
+	def write
+		IO.write(@output, @decoded_message)
 	end
 end
+
 
 class Dictionary
 
@@ -38,48 +44,73 @@ class Dictionary
 	end
 end
 
+
 class Decoder
+	attr_reader :begin_char
+	attr_reader :end_char
 
 	def initialize(jumbled_key,jumbled_message, dictionary)
 		@jumbled_key = jumbled_key
 		@jumbled_message = jumbled_message
 		@dictionary = Dictionary.new(dictionary).dictionary
+		# Setting begin_char and end_char for char_shift. Values correspond to
+		#"A" and "Z" characters
+		@begin_char = 65
+		@end_char = 90
 	end
 
-	def Secret_Messages
+	def decode
 		key = key_breaker(@jumbled_key)
-		key_shift = key_converter(key)
-		decoded_message = message_breaker(key_shift, @jumbled_message)
-		return decoded_message
+		decoded_message = message_breaker(key, @jumbled_message)
 	end
 
 	def key_breaker(jumbled_key)
-
 		rough_potentials = []
+		fine_potentials = []
+		key = []
+
 		('A'..'Z').each do |shift_letter|
 			decoded_keyword = ""
 			jumbled_key.each_char do |letter|
-				new_position = char_shift(65, 90, letter.ord, shift_letter.ord - 65)
+				new_position = char_shift(letter.ord, shift_letter.ord - 65)
 				decoded_keyword << new_position.chr
 			end
 			rough_potentials << decoded_keyword
 		end
 
-		fine_potentials = []
 		rough_potentials.each do |potential_keyword|
 			if @dictionary.include?(potential_keyword.upcase)
 				fine_potentials << potential_keyword
 			end
 		end
-		return fine_potentials
+
+		fine_potentials.join.upcase.codepoints.each do |letter|
+			key << letter - @begin_char
+		end
+
+		return key
 	end
 
-	def key_converter(key)
-		key_shift = []
-		key.join.upcase.codepoints.each do |letter|
-			key_shift << letter - 65
+	def message_breaker(key_shift, message)
+		counter = 0
+		decoded_bytes = []
+		message.bytes do |byte|
+			counter = counter % key_shift.length
+			shift = key_shift[counter]		
+			if (byte >= 65 && byte <= 90)
+				new_letter = char_shift(byte, -shift)
+				decoded_bytes << new_letter
+				counter += 1
+			elsif (byte >= 97 && byte <= 122)
+				new_letter = char_shift(byte + 32, -shift)
+				decoded_bytes << new_letter
+				counter =+ 1			
+			else
+				decoded_bytes << byte
+			end
 		end
-		return key_shift
+		decoded_message = bytes_to_letters(decoded_bytes).join
+		return decoded_message
 	end
 
 	def bytes_to_letters(args)
@@ -90,7 +121,7 @@ class Decoder
 		return chars
 	end
 
-	def char_shift(begin_char, end_char, current_char, shift)
+	def char_shift(current_char, shift)
 		range = end_char - begin_char + 1
 		new_char = current_char + shift
 		if shift > 0
@@ -101,30 +132,10 @@ class Decoder
 		end
 		return new_char
 	end
-
-
-	def message_breaker(key_shift, message)
-		counter = 0
-		decoded_bytes = []
-		message.bytes do |byte|
-			counter = counter % key_shift.length
-			shift = key_shift[counter]		
-			if (byte >= 65 && byte <= 90)
-				new_letter = char_shift(65, 90, byte, -shift)
-				decoded_bytes << new_letter
-				counter += 1
-			elsif (byte >= 97 && byte <= 122)
-				new_letter = char_shift(97, 122, byte, -shift)
-				decoded_bytes << new_letter
-				counter =+ 1			
-			else
-				decoded_bytes << byte
-			end
-		end
-		decoded_message = bytes_to_letters(decoded_bytes).join
-		return decoded_message
-	end
 end
 
 
-Message.new
+#################main#################
+
+answer = Message.new
+answer.write
