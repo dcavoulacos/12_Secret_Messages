@@ -126,4 +126,5 @@ class Decoder
 	end
 end
 
+
 Message.new
